@@ -1,0 +1,85 @@
+# Charity Donation Tracker - MyApplication (Android) Overview
+
+## Project Structure
+- **app/src/main/java/com/example/myapplication/**: All Kotlin source files (activities, adapters, models, API interfaces)
+- **app/src/main/res/layout/**: XML layout files for screens and dialogs
+- **app/src/main/res/values/**: Strings, colors, themes
+- **app/src/main/AndroidManifest.xml**: App manifest and permissions
+
+## Main Activities & Components
+- **AdminAllocationsActivity**: Admin views/adds allocations
+- **AddAllocationActivity**: Form to create a new allocation
+- **AssignedProjectsActivity**: Staff views/creates assigned projects
+- **AddEditProjectActivity**: Add/edit projects (admin or staff mode)
+- **ManageBeneficiariesActivity**: Staff manages beneficiaries
+- **AllocateDonationsActivity**: Staff allocates donations
+- **DonorDashboardActivity**: Donor overview
+- **MakeDonationActivity**: Donor makes a donation
+- **MyDonationsActivity**: Donor views their donations
+- **LoginActivity, RegisterActivity**: Authentication
+- **Adapters**: For displaying lists (projects, allocations, users, etc.)
+
+## User Roles & Flows
+- **Admin**: Manages users, projects, allocations, and donations
+- **Staff**: Manages assigned projects, beneficiaries, and allocations
+- **Donor**: Views projects, donates, and tracks their giving
+
+## Communication with Backend
+- Uses Retrofit to call backend APIs (e.g., add project, make donation)
+- Sends/receives data as models (Project, User, Donation, etc.)
+- All actions (add, update, list) are synced with the backend in real time
+
+## Non-Technical Summary
+- The app is a tool for a charity to manage donations, projects, staff, and beneficiaries.
+- Each user sees only what's relevant to their role.
+- The app is easy to use, with clear buttons and forms for every action.
+- All information is kept up-to-date by communicating with the backend server.
+
+## Main Backend APIs Used by the Android App
+
+### User Authentication & Management
+- `POST /api/users/register` — Register a new user
+- `POST /api/auth/login` — User login
+- `GET /api/users` — List all users (admin)
+- `PUT /api/users/{id}` — Update user info
+- `DELETE /api/users/{id}` — Delete user
+
+### Projects
+- `GET /api/projects` — List all projects
+- `POST /api/projects` — Create a new project (admin/staff)
+- `PUT /api/projects/{id}` — Update a project
+- `DELETE /api/projects/{id}` — Delete a project
+- `GET /api/projects/assigned/{staffId}` — List projects assigned to a staff member
+
+### Allocations
+- `GET /api/allocations` — List all allocations
+- `POST /api/allocations` — Create a new allocation (admin/staff)
+- `GET /api/allocations/staff/{userId}` — List allocations made by a staff member
+- `DELETE /api/allocations/{id}` — Delete an allocation
+
+### Beneficiaries
+- `GET /api/beneficiaries` — List all beneficiaries
+- `POST /api/beneficiaries` — Add a new beneficiary
+- `PUT /api/beneficiaries/{id}` — Update a beneficiary
+- `DELETE /api/beneficiaries/{id}` — Delete a beneficiary
+- `GET /api/beneficiaries/project/{projectId}` — List beneficiaries for a project
+
+### Donations
+- `GET /api/donations` — List all donations
+- `POST /api/donations` — Make a donation
+- `POST /api/donations/approve/{id}` — Approve a donation (admin)
+- `POST /api/donations/reject/{id}` — Reject a donation (admin)
+- `GET /api/donations/donor/{donorId}` — List donations by a donor
+- `GET /api/donations/project/{projectId}/total` — Get total donations for a project
+
+### Dashboards & Summaries
+- `GET /api/admin/summary` — Admin dashboard summary
+- `GET /api/staff/summary/{staffId}` — Staff dashboard summary
+
+---
+
+*These APIs allow the Android app to create, read, update, and delete all the main entities (users, projects, donations, allocations, beneficiaries) and to fetch dashboard data for each user role.*
+
+---
+
+*This file is for anyone who needs a quick, clear understanding of the Android app's structure, features, and how it works with the backend.* 

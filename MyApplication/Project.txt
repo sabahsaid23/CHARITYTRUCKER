@@ -1,0 +1,175 @@
+# Charity Donation Tracker - Android App Overview
+
+## Project Structure
+
+- **app/src/main/java/com/example/myapplication/**
+  - Contains all Kotlin source files (activities, adapters, models, API interfaces).
+- **app/src/main/res/layout/**
+  - XML layout files for activities, dialogs, and list items.
+- **app/src/main/res/values/**
+  - Strings, colors, and themes.
+- **app/src/main/AndroidManifest.xml**
+  - App manifest and permissions.
+
+## Main Features & Flow
+
+### 1. **Authentication & User Roles**
+- Users log in as Admin, Staff, or Donor (handled via backend, not shown in this module).
+- Role determines accessible features and UI.
+
+### 2. **Admin Section**
+- **AdminAllocationsActivity**: View all allocations, add new allocations (assign staff, beneficiary, amount to a project).
+  - Uses: `AdminApi`, `AllocationAdapter`, `activity_admin_allocations.xml`
+- **AddAllocationActivity**: Form to create a new allocation.
+  - Fetches projects, beneficiaries (filtered by project), staff, and submits allocation.
+  - Uses: `AdminApi`, `activity_add_allocation.xml`
+- **AdminDashboard, AdminProjects, AdminUsers, etc.**: Manage users, projects, and donations (not detailed here).
+
+### 3. **Staff Section**
+- **AssignedProjectsActivity**: Staff view their assigned projects.
+  - Fetches projects assigned to the logged-in staff.
+  - Button to add a new project (auto-assigns to self).
+  - Uses: `StaffApi`, `ProjectAdapter`, `activity_assigned_projects.xml`
+- **AddEditProjectActivity**: Used for both admin and staff to add/edit projects.
+  - In staff mode, hides staff selector and assigns project to current staff.
+  - Uses: `AdminApi`, `activity_add_edit_project.xml`
+- **ManageBeneficiaries, AllocateDonations, etc.**: Staff can manage beneficiaries and allocate donations (not detailed here).
+
+### 4. **Donor Section**
+- **DonorDashboard, MakeDonation, MyDonations, ProjectsSupported**: Donors can view projects, make donations, and track their contributions.
+
+## Key Components & Why They're Used
+
+- **Activities**: Each major screen is an Activity (e.g., AdminAllocationsActivity, AssignedProjectsActivity).
+- **Adapters**: (e.g., `AllocationAdapter`, `ProjectAdapter`) for displaying lists in RecyclerViews.
+- **API Interfaces**: (`AdminApi`, `StaffApi`) define endpoints for backend communication using Retrofit.
+- **Models**: (`Project`, `User`, `Allocation`, `Beneficiary`) represent data structures exchanged with the backend.
+- **Layouts**: XML files define the UI for each screen and dialog.
+- **Retrofit**: Used for all HTTP API calls to the backend.
+- **Intents**: Used to navigate between activities and pass data (e.g., staff ID, project info).
+
+## Example Flow: Staff Adds a Project
+1. Staff opens AssignedProjectsActivity.
+2. Taps "Add Project" button.
+3. AddEditProjectActivity opens in staff mode (staff selector hidden).
+4. Staff enters project details and submits.
+5. Project is created and assigned to the staff member.
+6. AssignedProjectsActivity refreshes and shows the new project.
+
+## Why This Structure?
+- **Separation of Concerns**: Activities handle UI and user interaction, Adapters handle data display, API interfaces handle backend communication.
+- **Reusability**: Shared activities (like AddEditProjectActivity) are used by both admin and staff, with logic toggled by intent flags.
+- **Scalability**: New features (e.g., more roles, new screens) can be added with minimal changes to existing code.
+
+## How to Present
+- Walk through the main flows (Admin, Staff, Donor) using the app.
+- Highlight how each component (activity, adapter, API) fits into the flow.
+- Emphasize the modularity and clarity of the codebase for future development.
+
+## User Roles: Components & Layouts
+
+### Admin
+- **AdminAllocationsActivity** — `activity_admin_allocations.xml`
+  - View all allocations, add new allocation
+- **AddAllocationActivity** — `activity_add_allocation.xml`
+  - Form to create a new allocation
+- **AdminDashboardActivity** — `activity_admin_dashboard.xml`
+  - Admin dashboard overview
+- **AdminProjectsActivity** — `activity_admin_projects.xml`
+  - Manage all projects
+- **AddEditProjectActivity** (admin mode) — `activity_add_edit_project.xml`
+  - Add/edit any project, assign staff
+- **AdminUsersActivity** — `activity_admin_users.xml`
+  - Manage users
+- **AdminDonationsActivity** — `activity_admin_donations.xml`
+  - View/manage donations
+- **AdminDonationDetailActivity** — `activity_admin_donation_detail.xml`
+  - View donation details
+- **Adapters:**
+  - `AllocationAdapter`, `ProjectAdapter`, `UserAdapter`, `DonationAdapter`
+
+### Staff
+- **AssignedProjectsActivity** — `activity_assigned_projects.xml`
+  - View projects assigned to staff
+- **AddEditProjectActivity** (staff mode) — `activity_add_edit_project.xml`
+  - Add/edit projects (auto-assign to self)
+- **ManageBeneficiariesActivity** — `activity_manage_beneficiaries.xml`
+  - Manage beneficiaries for assigned projects
+- **AllocateDonationsActivity** — `activity_allocate_donations.xml`
+  - Allocate donations to beneficiaries
+- **StaffDashboardActivity** — `activity_staff_dashboard.xml`
+  - Staff dashboard overview
+- **StaffAllocationsActivity** — `activity_staff_allocations.xml`
+  - View allocations made by staff
+- **Adapters:**
+  - `ProjectAdapter`, `BeneficiaryAdapter`, `AllocationAdapter`
+
+### Donor
+- **DonorDashboardActivity** — `activity_donor_dashboard.xml`
+  - Donor dashboard overview
+- **MakeDonationActivity** — `activity_make_donation.xml`
+  - Make a donation to a project
+- **MyDonationsActivity** — `activity_my_donations.xml`
+  - View donations made by donor
+- **ProjectsSupportedActivity** — `activity_projects_supported.xml`
+  - View projects supported by donor
+- **Adapters:**
+  - `DonationAdapter`, `ProjectAdapter`
+
+### Shared/Other
+- **LoginActivity** — `activity_login.xml`
+- **RegisterActivity** — `activity_register.xml`
+- **Adapters:**
+  - Used throughout for displaying lists in RecyclerViews
+
+---
+
+*Each activity is paired with a layout XML file that defines its UI. Adapters are used to bind data to RecyclerViews for list displays. This mapping helps presenters and developers quickly locate the UI and logic for each user role and feature.*
+
+---
+
+## Non-Technical Overview: How the App Works
+
+### What is this App?
+This app helps a charity organization manage donations, projects, staff, and beneficiaries. It allows different users (Admins, Staff, Donors) to log in and perform their specific tasks easily from their phones.
+
+### Who Uses the App?
+- **Admin:** Manages everything—users, projects, donations, and allocations.
+- **Staff:** Manages projects assigned to them, allocates donations to beneficiaries, and manages beneficiaries.
+- **Donor:** Views projects, makes donations, and tracks their own giving.
+
+### How Does It Work?
+- **Admins** can add new projects, assign staff, and see all donations and allocations.
+- **Staff** see only the projects assigned to them. They can add new projects (assigned to themselves), manage beneficiaries, and allocate donations to people in need.
+- **Donors** can browse projects, donate money, and see a history of their donations.
+
+### What are APIs?
+APIs are like messengers between the app and the server (the backend). When you tap a button (like "Add Project"), the app sends a request to the server using an API. The server processes the request (e.g., saves the new project) and sends back a response (e.g., "Project created!").
+
+- **Example:** When a staff member adds a project, the app sends the project details to the server using an API. The server saves it and confirms the action.
+
+### What are Models?
+Models are the "shapes" of the data the app uses. For example:
+- **User:** Information about a person using the app (name, role, email, etc.)
+- **Project:** Details about a charity project (name, description, target amount, assigned staff)
+- **Donation:** Information about a donation (who gave, how much, for which project)
+- **Beneficiary:** A person who receives help from a project
+- **Allocation:** A record of how much money was given to which beneficiary for which project
+
+### How Do Users Interact?
+- Users log in and see only what is relevant to their role.
+- The app guides users with clear buttons and forms (e.g., "Add Project", "Make Donation").
+- All information is kept up-to-date by communicating with the server in real time.
+
+### Why is this Useful?
+- **Transparency:** Everyone can see where donations go and how they are used.
+- **Efficiency:** Admins and staff can manage everything from their phones, saving time and paperwork.
+- **Trust:** Donors can track their impact and know their money is helping real people.
+
+---
+
+*This section is for anyone, regardless of technical background, to understand what the app does, who uses it, and how it helps the charity run smoothly.*
+
+---
+
+*This file provides a high-level overview for demonstration and presentation purposes. For detailed code or API documentation, refer to the source files.* 

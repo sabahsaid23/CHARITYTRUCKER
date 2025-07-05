@@ -1,0 +1,50 @@
+# Charity Donation Tracker - Backend Overview
+
+## Project Structure
+- **src/main/java/com/charity/charity/donation/**
+  - Main Java source code for the backend (Spring Boot)
+- **src/main/resources/**
+  - Configuration files (e.g., application.properties)
+- **pom.xml**
+  - Maven dependencies and project configuration
+
+## Main Packages & Their Purpose
+- **controller/**: Handles HTTP requests (APIs) for users, projects, donations, allocations, beneficiaries, etc.
+- **services/**: Business logic for managing users, projects, donations, etc.
+- **model/**: Data entities (User, Project, Donation, Beneficiary, Allocation)
+- **repository/**: Database access (CRUD operations for each entity)
+- **dto/**: Data Transfer Objects for sending/receiving structured data
+- **config/**: Security and web configuration
+
+## Key Models/Entities
+- **User**: Represents a person (admin, staff, donor)
+- **Project**: A charity project (name, description, target, assigned staff)
+- **Donation**: A donation made by a donor to a project
+- **Beneficiary**: A person who receives help from a project
+- **Allocation**: Money allocated to a beneficiary for a project by staff
+
+## Main API Endpoints (Controllers)
+- **/api/users**: Register, list, update, and delete users
+- **/api/projects**: Create, update, delete, and list projects; assign staff
+- **/api/beneficiaries**: Manage beneficiaries (add, update, delete, list)
+- **/api/donations**: Make, approve, reject, and list donations
+- **/api/allocations**: Allocate donations to beneficiaries, list allocations
+- **/api/staff/summary/{staffId}**: Get staff dashboard summary
+
+## Data Flow Example
+1. **Donor makes a donation**: API receives donation, saves it, updates project's received amount.
+2. **Admin assigns staff to a project**: API updates project with assigned staff.
+3. **Staff allocates funds**: API creates an allocation linking project, beneficiary, amount, and staff.
+
+## Security
+- Uses Spring Security for authentication and role-based access
+- Only authorized users can access certain endpoints
+
+## Non-Technical Overview
+- The backend is like the "brain" of the system. It stores all information, processes requests from the app, and ensures everything is secure and up-to-date.
+- When someone uses the app (e.g., adds a project, makes a donation), the backend receives the request, updates the database, and sends back a response.
+- All user roles (admin, staff, donor) interact with the backend through simple, secure APIs.
+
+---
+
+*This file is for both technical and non-technical audiences to understand how the backend works, what it manages, and how it supports the Android app and other clients.* 
